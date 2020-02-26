@@ -134,6 +134,24 @@ It will auto heat up if the current temp doesn't reach the target.
 
 ############## Function Customization #######################################
 
+################################
+### List of useful functions ###
+################################
+# Reset EEPROM:   M502; M500; M501
+# Z-offset tunning
+## Start:           G28; G91; G0 X28 Y-33; G90; G1 Z0;
+## Move Z UP:       M290 Z0.025; M500;
+## Move Z DOWN:     M290 Z-0.025; M500;
+# Reset BLTouch:    M280 P0 S60; G4 P500; M280 P0 S90; G4 P200;
+# PID nozzle:       M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 S220 C8 U1;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;M500;M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 E-1 S60 C8 U1;M500;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;
+# Save to EEPROM:   M42 P4 S0;M42 P5 S255;M42 P6 S0;M500;G4 S1;M42 P4 S255;M42 P5 S0;M42 P6 S0;
+# LED
+## black            M42 P4 S0;M42 P5 S0;M42 P6 S0;
+## white            M42 P4 S255;M42 P5 S255;M42 P6 S255;
+## red              M42 P4 S0;M42 P5 S255;M42 P6 S0;
+## green            M42 P4 S255;M42 P5 S0;M42 P6 S0;
+## blue             M42 P4 S0;M42 P5 S0;M42 P6 S255;
+
 #user-defined function1 and 2.(display this button .  disable: 0; enable: 1)
 >cfg_function_btn1_display:1
 
@@ -143,22 +161,31 @@ It will auto heat up if the current temp doesn't reach the target.
 
 
 #set number of  "More" button 
->moreitem_pic_cnt:5
+>moreitem_pic_cnt:7
 
 #edit command for 1~7 "More" button,each command must be separated by semicolon ";"
->moreitem_button1_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S0;
+#>moreitem_button1_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S0;
+#>moreitem_button2_cmd:M42 P4 S255;M42 P5 S255;M42 P6 S255;
+#>moreitem_button3_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0;
+#>moreitem_button4_cmd:M42 P4 S255;M42 P5 S0;M42 P6 S0;
+#>moreitem_button5_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S255;
+#>moreitem_button6_cmd:G28 Z0;
+#>moreitem_button7_cmd:G28;
 
->moreitem_button2_cmd:M42 P4 S255;M42 P5 S255;M42 P6 S255;
-
->moreitem_button3_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0;
-
->moreitem_button4_cmd:M42 P4 S255;M42 P5 S0;M42 P6 S0;
-
->moreitem_button5_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S255;
-
->moreitem_button6_cmd:G28 Z0;
-
->moreitem_button7_cmd:G28;
+# Reset EEPROM
+>moreitem_button1_cmd:M502; M500; M501
+# Start Z-offset tunning (for calibrating BLTouch)
+>moreitem_button2_cmd:G28; G91; G0 X28 Y-33; G90; G1 Z0;
+# Move Z UP
+>moreitem_button3_cmd:M290 Z0.025; M500;
+# Move Z DOWN
+>moreitem_button4_cmd:M290 Z-0.025; M500;
+# Reset BLTouch
+>moreitem_button5_cmd:M280 P0 S60; G4 P500; M280 P0 S90; G4 P200;
+# PID autotune for nozzle
+>moreitem_button6_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 S220 C8 U1;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;M500;M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 E-1 S60 C8 U1;M500;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;
+# Save to EEPROM
+>moreitem_button7_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0;M500;G4 S1;M42 P4 S255;M42 P5 S0;M42 P6 S0;
 
 #how many "More" button display on screen interface
 >morefunc_cnt:2
