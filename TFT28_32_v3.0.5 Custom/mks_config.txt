@@ -58,14 +58,14 @@
 #########  Filament Change Function  ##############################
 
 #the speed to extrude filament(mm/min)
->cfg_filament_load_speed:1200
+>cfg_filament_load_speed:400
 #the lenght to extrude filament (mm)
->cfg_filament_load_length:200
+>cfg_filament_load_length:100
 
 #the speed to retract filament(mm/min)
->cfg_filament_unload_speed:1200
+>cfg_filament_unload_speed:2000
 #the lenght to retract filament(mm)
->cfg_filament_unload_length:200
+>cfg_filament_unload_length:100
 
 #It is the minimum temperature for filament change.
 It will auto heat up if the current temp doesn't reach the target.
@@ -83,18 +83,18 @@ It will auto heat up if the current temp doesn't reach the target.
 >cfg_auto_leveling_cmd:G28;G29;
 
 #the point number of manual leveling:(3,4,5 point available)
->cfg_point_number:4
+>cfg_point_number:5
 
 #the coordinates of 5 point on manual leveling
->cfg_point1:50,50
->cfg_point2:180,50
->cfg_point3:180,180
->cfg_point4:50,180
->cfg_point5:150,150
+>cfg_point1:45,45
+>cfg_point2:175,45
+>cfg_point3:175,175
+>cfg_point4:45,175
+>cfg_point5:110,110
 
 #the travel speed of leveling(mm/min)
 >cfg_leveling_z_speed:1500
->cfg_leveling_xy_speed:3000
+>cfg_leveling_xy_speed:8000
 
 #When the XY axis is moved manually, the height of the z-axis of the extruded Z axis from the origin (mm)
 
@@ -109,14 +109,14 @@ It will auto heat up if the current temp doesn't reach the target.
 >cfg_wifi_type:0
 
 #wifi mode(0:sta;1:ap)
->cfg_wifi_mode:0
+>cfg_wifi_mode:1
 
 #wifi name and password
->cfg_wifi_ap_name:MKS_wifi
->cfg_wifi_key_code:makerbase
+>cfg_wifi_ap_name:Artillery
+>cfg_wifi_key_code:12345678
 
 #0:disable cloud service 1:enable cloud service
->cfg_cloud_enable:1
+>cfg_cloud_enable:0
 #cloud service adress
 >cfg_wifi_cloud_host:www.baizhongyun.cn
 #cloud service port
@@ -134,6 +134,24 @@ It will auto heat up if the current temp doesn't reach the target.
 
 ############## Function Customization #######################################
 
+################################
+### List of useful functions ###
+################################
+# Reset EEPROM:   M502; M500; M501
+# Z-offset tunning
+## Start:           G28; G91; G0 X28 Y-33; G90; G1 Z0;
+## Move Z UP:       M290 Z0.025; M500;
+## Move Z DOWN:     M290 Z-0.025; M500;
+# Reset BLTouch:    M280 P0 S60; G4 P500; M280 P0 S90; G4 P200;
+# PID nozzle:       M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 S220 C8 U1;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;M500;M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 E-1 S60 C8 U1;M500;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;
+# Save to EEPROM:   M42 P4 S0;M42 P5 S255;M42 P6 S0;M500;G4 S1;M42 P4 S255;M42 P5 S0;M42 P6 S0;
+# LED
+## black            M42 P4 S0;M42 P5 S0;M42 P6 S0;
+## white            M42 P4 S255;M42 P5 S255;M42 P6 S255;
+## red              M42 P4 S0;M42 P5 S255;M42 P6 S0;
+## green            M42 P4 S255;M42 P5 S0;M42 P6 S0;
+## blue             M42 P4 S0;M42 P5 S0;M42 P6 S255;
+
 #user-defined function1 and 2.(display this button .  disable: 0; enable: 1)
 >cfg_function_btn1_display:1
 
@@ -143,30 +161,39 @@ It will auto heat up if the current temp doesn't reach the target.
 
 
 #set number of  "More" button 
->moreitem_pic_cnt:0
+>moreitem_pic_cnt:7
 
 #edit command for 1~7 "More" button,each command must be separated by semicolon ";"
->moreitem_button1_cmd:G28 X0;
 
->moreitem_button2_cmd:G28 X0;
+# Reset EEPROM
+>moreitem_button1_cmd:M502; M500; M501;
 
->moreitem_button3_cmd:G28 Y0;
+# Start Z-offset tunning (for calibrating BLTouch)
+>moreitem_button2_cmd:G28; G91; G0 X28 Y-33; G90; G1 Z0;
 
->moreitem_button4_cmd:G28 Y0;
+# Move Z UP
+>moreitem_button3_cmd:M290 Z0.025; M500;
 
->moreitem_button5_cmd:G28 Z0;
+# Move Z DOWN
+>moreitem_button4_cmd:M290 Z-0.025; M500;
 
->moreitem_button6_cmd:G28 Z0;
+# Reset BLTouch
+>moreitem_button5_cmd:M280 P0 S60; G4 P500; M280 P0 S90; G4 P200;
 
->moreitem_button7_cmd:G28;
+# PID autotune for nozzle
+>moreitem_button6_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 S230 C8 U1;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;M500;M42 P4 S0;M42 P5 S255;M42 P6 S0;M106 S127;M303 E-1 S90 C8 U1;M500;M42 P4 S255;M107;M42 P5 S0;M42 P6 S0;
+
+# Save to EEPROM
+>moreitem_button7_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0; M500; G4 S1; M42 P4 S255;M42 P5 S0;M42 P6 S0;
+
 
 #how many "More" button display on screen interface
->morefunc_cnt:0
+>morefunc_cnt:3
 
 #command setting on button1~5
->morefunc1_cmd:G28;
->morefunc2_cmd:G28;
->morefunc3_cmd:G28;
+>morefunc1_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S0;
+>morefunc2_cmd:M42 P4 S255;M42 P5 S255;M42 P6 S255;
+>morefunc3_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0; M500; G4 S1; M42 P4 S255;M42 P5 S0;M42 P6 S0;
 >morefunc4_cmd:G28;
 >morefunc5_cmd:G28;
 >morefunc6_cmd:G28;
@@ -199,7 +226,7 @@ It will auto heat up if the current temp doesn't reach the target.
 >cfg_printingstat_word_color:0xFFFFFF
 
 #3D effects setting (disable: 0; enable: 1)
->cfg_BUTTON_3D_effects:0
+>cfg_BUTTON_3D_effects:1
 
 #The screen is flipped 180°(0x00: no flip, 0xEE: flip)
 >cfg_OVERTURN_180:0x00
@@ -215,10 +242,10 @@ It will auto heat up if the current temp doesn't reach the target.
 >cfg_single_nozzle:0
 
 #For the M110 command plus check, the version of Marlin 1.0.2 and below is set to 1, and the other versions are set to 0.
->cfg_M110_add_checkSum:1
+>cfg_M110_add_checkSum:0
 
 #Enable function of display error message. (no:0; Yes:1）
->cfg_display_eeror_message:0
+>cfg_display_eeror_message:1
 
 #Enable function of babastep. (no:0; Yes:1）
 >cfg_babystep_btn_display:1
